@@ -1,233 +1,99 @@
 from turtle import *
-import random
-from time import * 
-speed(0)
-
-def people():
-    penup()
-    goto(-220, 50)
-    pendown()
-    right(90)
-    forward(75)
-    back(75)
-    left(90)
-    circle(25)
-    right(90)
-    forward(25)
-    right(135)
-    forward(50)
-    back(50)
-    right(90)
-    forward(50)
-    back(50)
-    right(135)
-    forward(50)
-    right(30)
-    forward(50)
-    back(50)
-    left(60)
-    forward(50)
-    left(60)
+from time import sleep
+from drawing import people, car, last_car, draw_blood_splatter
 
 
+def question():
+    """ 提示使用者輸入問題 """
+    ques = textinput("Hangman Game", "Enter the word you want others to guess:")
+    print(ques)
+    return ques
 
-
-def car(time):
-    pensize(5)
-    penup()
-    goto(-140 + time * 60, -70)
-    pendown()
-    color("white")
-    begin_fill()
-    forward(200)
-    left(90)
-    forward(200)
-    left(90)
-    forward(200)
-    left(90)
-    forward(200)
-    left(90)
-    end_fill()
-    pensize(5)
-    penup()
-    goto(-200 + time * 60, -50)
-    pendown()
-    color("gray")
-    forward(200)
-    left(90)
-    forward(50)
-    left(90)
-    forward(200)
-    left(90)
-    forward(50)
-    left(90)
-    penup()
-    goto(-170 + time * 60, 0)
-    pendown()
-    forward(140)
-    left(90)
-    forward(30)
-    left(90)
-    forward(140)
-    left(90)
-    forward(30)
-    left(90)
-    penup()
-    goto(-150 + time * 60, -60)
-    pendown()
-    color("black")
-    circle(20)
-    penup()
-    goto(-50 + time * 60, -60)
-    pendown()
-    circle(20)
-
-def last_car():
-    pensize(5)
-    penup()
-    goto(-140, -70)
-    pendown()
-    color("white")
-    begin_fill()
-    forward(200)
-    left(90)
-    forward(200)
-    left(90)
-    forward(200)
-    left(90)
-    forward(200)
-    left(90)
-    end_fill()
-    pensize(5)
-    penup()
-    goto(-190, -50)
-    pendown()
-    color("red")
-    forward(200)
-    left(90)
-    forward(50)
-    left(90)
-    forward(200)
-    left(90)
-    forward(50)
-    left(90)
-    penup()
-    goto(-160, 0)
-    pendown()
-    forward(140)
-    left(90)
-    forward(30)
-    left(90)
-    forward(140)
-    left(90)
-    forward(30)
-    left(90)
-    penup()
-    goto(-140, -60)
-    pendown()
-    color("black")
-    circle(20)
-    penup()
-    goto(-40, -60)
-    pendown()
-    circle(20)
-
-def draw_blood_splatter():
-    color("red")
-    hideturtle()
-    penup()
-    goto(-200, 0)
-    pendown()
-    begin_fill()
-    circle(5)
-    end_fill()
-
-    for _ in range(30): 
-        angle = random.randint(0, 360) 
-        distance = random.randint(30, 150)
-        size = random.randint(1, 3)
-
-        penup()
-        setheading(angle)
-        forward(distance)
-        pendown()
-        begin_fill()
-        circle(size) 
-        end_fill()
-        penup()
-        goto(-200, 0)
 
 def solution(solution):
+    """ 顯示要猜的單字個數(以底線表示) """
     penup()
-    goto(-300, 200)
+    goto(-260, 140)
     pendown()
+    color('black')
     num_letters = len(solution)
-    in_progress = list( '_'*num_letters )
-    for _ in in_progress:
+    for _ in range(num_letters):    #根據字長畫底線
         write("_", align='left', font=('Arial', 30, 'normal'))
         penup()
         forward(25)
         pendown()
 
-def left_time(time):
-    penup()
-    goto(50,255)
-    pendown()
-    color("white")
-    write( "your left time :" + str(time + 1), align='left', font=('Arial', 30, 'normal'))
-    color("black")
-    write( "your left time :" + str(time), align='left', font=('Arial', 30, 'normal'))
 
-def question():
-        ques = textinput("your question", "input here")
-        print(ques)
-        return ques
+def left_time(time):
+    """ 顯示剩餘時間 """
+    penup()
+    goto(100, 200)
+    pendown()
+    color("white")   #用白色覆蓋掉本來的left time
+    write("Time Left : " + str(time + 1), align='left', font=('Arial', 25, 'normal'))
+    color("black")   #再用黑色寫上剩餘的left time
+    write("Time Left : " + str(time), align='left', font=('Arial', 25, 'normal'))
+
+
 
 def answer(solution):
-    solution_list = list(solution)
-    i = 5
-    correct_count = 0
-    left_time(5)
-    while i > 0:
-        ans_letter = textinput("your answer", "input here")
-        if ans_letter in solution_list:
-            while ans_letter in solution_list:
-                correct_count += 1
+    """ 處理遊戲回答邏輯 """
+    solution_list = list(solution.lower())  # 把題目存成list。eg. she => solution_list = ['s','h','e']
+    opportunity = 5  #總共給予5次猜題機會
+    correct_count = 0  #紀錄正確次數
+    left_time(opportunity)    #顯示剩餘次數(初始次數為5)
 
+    while opportunity > 0:
+        ans_letter = textinput("Guess the word!", "Enter the word:")
+        ans_letter = ans_letter.lower()   #統一用小寫字母
+
+        if ans_letter in solution_list:   #如果猜的字有在題目內
+            while ans_letter in solution_list:  #用while的原因是因為，題目中可能有相同的字母出現。例如:['h','e','l','l','o']
+                correct_count += 1
                 penup()
-                goto(-300, 205)
-                forward(25*solution_list.index(ans_letter))
+                goto(-260, 140)
+                forward(25 * solution_list.index(ans_letter))   #看猜對的字在第幾格位子，就要往前多少
                 pendown()
-                write(ans_letter, align='left', font=('Arial', 30, 'normal'))
-                solution_list[solution_list.index(ans_letter)] = None
+                color('black')
+                write(ans_letter, align='left', font=('Arial', 30, 'normal'))   #在對應的空格印出猜對的字
+                solution_list[solution_list.index(ans_letter)] = None   #把猜對的字母，從題目list中移除
+          
+
+            if correct_count == len(solution):    #全部猜對
                 penup()
-                goto(-300, 205)
+                goto(-165, -200)
                 pendown()
-            if correct_count == len(solution):
-                penup()
-                goto(-250, -200)
-                pendown()
-                write("SUCCESS", align='left', font=('Arial', 100, 'normal'))
-                return
+                color('Green')
+                write("!!SUCCESS!!", align='left', font=('Arial', 40, 'normal'))
+                return    #結束
             
-        else:
-            i -= 1
-            left_time(i)
-            if i > 0:
-                car(i)   
+
+
+        else:            #如果猜的字"沒有"在題目內
+            opportunity -= 1  #機會減少一次
+            left_time(opportunity)  #顯示剩餘次數
+            if opportunity > 0:   
+                car(opportunity)    #繪製車子位子(車子位子是根據剩餘機會來決定。機會越少就離人愈近)
+
         sleep(0.5)
 
-    last_car()
-    draw_blood_splatter()
-    penup()
-    goto(-150, -200)
-    pendown()
-    write("Failed", align='left', font=('Arial', 100, 'normal'))
 
-ques = question()
-people()
-car(5)
-solution(ques)
-answer(ques)
+    last_car()   #機會用完了(挑戰失敗)，就繪製被車撞圖
+    draw_blood_splatter()   #繪製血液噴濺
+    penup()
+    goto(-115, -200)
+    pendown()
+    color('Red')
+    write("!!Failed!!", align='left', font=('Arial', 40, 'normal'))
+
+
+
+
+# 遊戲流程
+ques = question()   # 玩家輸入題目
+people()            # 畫人在畫面上
+car(5)              # 繪製車子(於起始位子)
+solution(ques)      # 繪製題目的底線(依照題目長度)
+answer(ques)        # 進行遊戲回答邏輯
 
 done()
