@@ -78,7 +78,7 @@ def last_car():
     penup()
     goto(-140, -60)
     pendown()
-    color("black")
+    color("gray")
     circle(20)
 
     penup()

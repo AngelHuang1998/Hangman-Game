@@ -30,9 +30,9 @@ def left_time(time):
     goto(100, 200)
     pendown()
     color("white")   #用白色覆蓋掉本來的left time
-    write("Time Left : " + str(time + 1), align='left', font=('Arial', 25, 'normal'))
+    write("Times Left : " + str(time + 1), align='left', font=('Arial', 25, 'normal'))
     color("black")   #再用黑色寫上剩餘的left time
-    write("Time Left : " + str(time), align='left', font=('Arial', 25, 'normal'))
+    write("Times Left : " + str(time), align='left', font=('Arial', 25, 'normal'))
 
 
 
@@ -84,7 +84,7 @@ def answer(solution):
     goto(-115, -200)
     pendown()
     color('Red')
-    write("!!Failed!!", align='left', font=('Arial', 40, 'normal'))
+    write("!!Failed!!", align='left', font=('Arial', 40, 'normal'))   # 顯示失敗訊息
 
 
 
