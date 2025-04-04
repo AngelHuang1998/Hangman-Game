@@ -32,7 +32,6 @@ Guess the correct word before a car crashes into the stick figure... or else! �
 ### ✅ Success
 ![Success](result_success.png)
 
----
 
 ### ❌ Failure
 ![Failed](result_failed.png)
