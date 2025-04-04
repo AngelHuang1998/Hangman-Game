@@ -27,7 +27,7 @@ Guess the correct word before a car crashes into the stick figure... or else! �
 
 ---
 
-## 🖼 Screenshots
+## 🖼 Screenshots(Results)
 
 ### ✅ Success
 ![Success](result_success.png)
