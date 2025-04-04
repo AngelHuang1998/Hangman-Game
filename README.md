@@ -15,7 +15,7 @@ Guess the correct word before a car crashes into the stick figure... or else! �
 
 ---
 
-✏️ Features
+## ✏️ Features
 - Word masking using underscores (e.g., _ _ _ _)
 - Real-time letter input via textinput() pop-up
 - Animated car moving closer with each wrong guess
